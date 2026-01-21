@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { CodeXml, Route, Sparkles, Book, Languages, Database, Wrench, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const navLinks = [
   { href: '/career-paths', label: 'Career Paths', icon: Route },
@@ -58,10 +59,12 @@ export function Header() {
           <Button asChild variant="ghost" className="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
             <Link href="/tools">Tools Explorer</Link>
           </Button>
+          <ThemeToggle />
         </nav>
         
         {/* Mobile Navigation */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border-blue-200 hover:border-purple-300 transition-all duration-300">

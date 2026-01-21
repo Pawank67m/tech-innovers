@@ -20,6 +20,7 @@ export default {
       fontFamily: {
         body: ['Roboto', 'sans-serif'],
         headline: ['"Space Grotesk"', 'sans-serif'],
+        transformers: ['"Orbitron"', '"Space Grotesk"', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -55,32 +56,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
-        },
-        // Enhanced gradient colors
-        gradient: {
-          'primary': '#3B82F6',
-          'secondary': '#8B5CF6',
-          'accent': '#EC4899',
-          'success': '#10B981',
-          'warning': '#F59E0B',
-          'info': '#06B6D4',
-        },
-        // Vibrant accent colors
-        vibrant: {
-          'blue': '#0EA5E9',
-          'purple': '#8B5CF6',
-          'pink': '#EC4899',
-          'green': '#10B981',
-          'orange': '#F97316',
-          'cyan': '#06B6D4',
-          'indigo': '#6366F1',
-          'emerald': '#059669',
+        // Transformers Theme Colors
+        transformers: {
+          'autobot-blue': '#0066CC',
+          'autobot-red': '#FF0000',
+          'decepticon-purple': '#6B46C1',
+          'energon-cyan': '#00FFFF',
+          'matrix-gold': '#FFD700',
+          'spark-orange': '#FF6600',
+          'steel-gray': '#708090',
+          'plasma-pink': '#FF1493',
         },
       },
       borderRadius: {
@@ -90,89 +75,44 @@ export default {
       },
       keyframes: {
         'accordion-down': {
-          from: {
-            height: '0',
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)',
-          },
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-          to: {
-            height: '0',
-          },
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
         },
-        // Enhanced animations
+        // Simplified animations for better performance
         'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        'fade-in-up': {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        'fade-in-down': {
-          '0%': { opacity: '0', transform: 'translateY(-20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        'energon-pulse': {
+          '0%, 100%': { 
+            'box-shadow': '0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF',
+            'border-color': '#00FFFF'
+          },
+          '50%': { 
+            'box-shadow': '0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 30px #00FFFF',
+            'border-color': '#FFD700'
+          },
         },
-        'slide-in-left': {
-          '0%': { opacity: '0', transform: 'translateX(-20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        'slide-in-right': {
-          '0%': { opacity: '0', transform: 'translateX(20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        'scale-in': {
-          '0%': { opacity: '0', transform: 'scale(0.9)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-        'bounce-in': {
-          '0%': { opacity: '0', transform: 'scale(0.3)' },
-          '50%': { opacity: '1', transform: 'scale(1.05)' },
-          '70%': { transform: 'scale(0.9)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-        'gradient-x': {
-          '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
-          '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
-        },
-        'gradient-y': {
-          '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'center top' },
-          '50%': { 'background-size': '200% 200%', 'background-position': 'center bottom' },
-        },
-        'float': {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-5px)' },
-        },
-        'glow': {
-          '0%, 100%': { 'box-shadow': '0 0 5px rgba(59, 130, 246, 0.3)' },
-          '50%': { 'box-shadow': '0 0 15px rgba(59, 130, 246, 0.5)' },
-        },
-        'shimmer': {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' },
+        'matrix-glow': {
+          '0%, 100%': { 'text-shadow': '0 0 5px #FFD700' },
+          '50%': { 'text-shadow': '0 0 10px #FFD700, 0 0 20px #FFD700' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        // Enhanced animations
-        'fade-in': 'fade-in 0.6s ease-out',
-        'fade-in-up': 'fade-in-up 0.6s ease-out',
-        'fade-in-down': 'fade-in-down 0.6s ease-out',
-        'slide-in-left': 'slide-in-left 0.6s ease-out',
-        'slide-in-right': 'slide-in-right 0.6s ease-out',
-        'scale-in': 'scale-in 0.4s ease-out',
-        'bounce-in': 'bounce-in 0.6s ease-out',
-        'gradient-x': 'gradient-x 3s ease infinite',
-        'gradient-y': 'gradient-y 3s ease infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'glow': 'glow 4s ease-in-out infinite alternate',
-        'shimmer': 'shimmer 2s linear infinite',
+        'fade-in': 'fade-in 0.3s ease-out',
+        'slide-up': 'slide-up 0.3s ease-out',
+        'energon-pulse': 'energon-pulse 2s ease-in-out infinite',
+        'matrix-glow': 'matrix-glow 3s ease-in-out infinite',
       },
     },
   },

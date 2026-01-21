@@ -75,16 +75,19 @@ export function TechNewsBot() {
     <div className="fixed bottom-6 right-6 z-50">
       <Popover>
         <PopoverTrigger asChild>
-          <Button size="lg" className="rounded-full h-14 w-14 bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
+          <Button 
+            size="lg" 
+            className="rounded-full h-14 w-14 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg transformers-theme:transformers-button transformers-theme:animate-energon-pulse"
+          >
             <Bot className="h-6 w-6" />
             <span className="sr-only">Open Tech News Bot</span>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-96 h-96 mr-4 p-0 flex flex-col">
-          <header className="p-4 bg-blue-600 text-white">
+        <PopoverContent className="w-96 h-96 mr-4 p-0 flex flex-col transformers-theme:transformers-card">
+          <header className="p-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white transformers-theme:from-slate-800 transformers-theme:to-slate-900 transformers-theme:border-b transformers-theme:border-cyan-500/30">
             <h3 className="font-bold flex items-center gap-2">
-              <Sparkles className="h-4 w-4"/> 
-              Tech News Bot
+              <Sparkles className="h-4 w-4 transformers-theme:text-cyan-400"/> 
+              <span className="transformers-theme:matrix-text">Tech News Bot</span>
             </h3>
           </header>
           <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
@@ -101,8 +104,8 @@ export function TechNewsBot() {
                   <div className={cn(
                     'max-w-[85%] rounded-lg px-3 py-2',
                     message.sender === 'user' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-100 border'
+                      ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white transformers-theme:from-cyan-600 transformers-theme:to-blue-600 transformers-theme:energon-glow' 
+                      : 'bg-gray-100 border transformers-theme:bg-slate-800 transformers-theme:border-cyan-500/30 transformers-theme:text-cyan-100'
                   )}>
                     {message.content}
                   </div>
@@ -115,24 +118,29 @@ export function TechNewsBot() {
                         <Bot className='h-4 w-4'/>
                       </AvatarFallback>
                     </Avatar>
-                   <div className="bg-gray-100 border rounded-lg px-3 py-2 text-sm flex items-center gap-2">
-                     <Loader2 className="h-4 w-4 animate-spin" /> 
-                     Thinking...
+                   <div className="bg-gray-100 border rounded-lg px-3 py-2 text-sm flex items-center gap-2 transformers-theme:bg-slate-800 transformers-theme:border-cyan-500/30 transformers-theme:text-cyan-100">
+                     <Loader2 className="h-4 w-4 animate-spin transformers-theme:text-cyan-400" /> 
+                     <span className="transformers-theme:matrix-text">Thinking...</span>
                    </div>
                  </div>
               )}
             </div>
           </ScrollArea>
-          <form onSubmit={handleSubmit} className="p-4 border-t">
+          <form onSubmit={handleSubmit} className="p-4 border-t transformers-theme:border-cyan-500/30 transformers-theme:bg-slate-900">
             <div className="relative">
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Ask about tech news..."
-                className="pr-12"
+                className="pr-12 transformers-theme:bg-slate-800 transformers-theme:border-cyan-500/30 transformers-theme:text-cyan-100 transformers-theme:placeholder-cyan-400"
                 disabled={isLoading}
               />
-              <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                size="icon" 
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 transformers-theme:transformers-button" 
+                disabled={isLoading}
+              >
                 <Send className="h-4 w-4" />
                 <span className="sr-only">Send</span>
               </Button>
