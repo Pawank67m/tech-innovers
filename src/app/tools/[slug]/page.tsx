@@ -21,8 +21,9 @@ function getToolFromSlug(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
 
-export default function ToolPage({ params }: { params: { slug: string } }) {
-  const tool = getToolFromSlug(params.slug);
+export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const tool = getToolFromSlug(slug);
 
   if (!tool) {
     notFound();

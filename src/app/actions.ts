@@ -8,6 +8,9 @@ import { projectIdeaGenerator, ProjectIdeaGeneratorInput } from '@/ai/flows/proj
 import { conceptExplainer, ConceptExplainerInput } from '@/ai/flows/concept-explainer';
 import { careerAdvisor, CareerAdvisorInput, CareerAdvisorOutput } from '@/ai/flows/career-advisor-flow';
 
+// Re-export types for components
+export type { CareerAdvisorOutput };
+
 
 export async function getPersonalizedRoadmap(input: PersonalizedRoadmapInput): Promise<{ data?: PersonalizedRoadmapOutput; error?: string }> {
   try {

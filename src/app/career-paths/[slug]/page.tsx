@@ -19,8 +19,9 @@ function getPathFromSlug(slug: string): CareerPath | undefined {
   return careerPaths.find((path) => path.slug === slug);
 }
 
-export default function CareerPathPage({ params }: { params: { slug: string } }) {
-  const path = getPathFromSlug(params.slug);
+export default async function CareerPathPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const path = getPathFromSlug(slug);
 
   if (!path) {
     notFound();

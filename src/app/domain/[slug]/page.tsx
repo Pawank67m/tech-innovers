@@ -22,8 +22,9 @@ function getDomainFromSlug(slug: string): Domain | undefined {
   return domains.find((domain) => domain.slug === slug);
 }
 
-export default function DomainPage({ params }: { params: { slug: string } }) {
-  const domain = getDomainFromSlug(params.slug);
+export default async function DomainPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const domain = getDomainFromSlug(slug);
 
   if (!domain) {
     notFound();

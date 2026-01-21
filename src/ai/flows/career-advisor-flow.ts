@@ -37,42 +37,6 @@ export async function careerAdvisor(input: CareerAdvisorInput): Promise<CareerAd
   return careerAdvisorFlow(input);
 }
 
-const prompt = ai.definePrompt({
-  name: 'careerAdvisorPrompt',
-  input: { schema: CareerAdvisorInputSchema },
-  output: { schema: CareerAdvisorOutputSchema },
-  prompt: `You are an expert career advisor for people entering the tech industry.
-Your goal is to recommend the best career path based on the user's interests and skills.
-You will also perform a skill-gap analysis.
-
-Analyze the user's input:
-- Interests: {{{json interests}}}
-- Current Skills: "{{{currentSkills}}}"
-- Learning Style: "{{{learningStyle}}}"
-
-Here are the available career paths and their required skills:
-{{#each C.careerPaths}}
-- Path: {{this.name}} (slug: {{this.slug}})
-  - Required Skills: {{json this.skills}}
-{{/each}}
-
-Based on all the information, perform the following tasks:
-
-1.  **Recommend a Career Path**: Choose the single best career path slug from the available list that aligns with the user's interests.
-
-2.  **Justify Your Recommendation**: Write a short, encouraging, one-sentence explanation for your choice. For example, "Because you enjoy building interfaces and have some design skills, Frontend Development is a great fit!"
-
-3.  **Analyze Skills**:
-    - Compare the user's "Current Skills" with the "Required Skills" for your recommended path.
-    - Identify which skills the user seems to have (possessed).
-    - Identify which skills the user seems to be missing.
-    - The available skills to choose from are: {{json C.allPathSkills}}
-    - Be realistic. If the user only mentions "Python", don't assume they also know "Pandas" and "NumPy" unless they state it.
-
-Return the final output in the required JSON format.
-`,
-});
-
 const careerAdvisorFlow = ai.defineFlow(
   {
     name: 'careerAdvisorFlow',
@@ -80,12 +44,41 @@ const careerAdvisorFlow = ai.defineFlow(
     outputSchema: CareerAdvisorOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input, {
-      C: {
-        careerPaths,
-        allPathSkills,
-      },
+    // Create a custom prompt with the data embedded
+    const customPrompt = `You are an expert career advisor for people entering the tech industry.
+Your goal is to recommend the best career path based on the user's interests and skills.
+You will also perform a skill-gap analysis.
+
+Analyze the user's input:
+- Interests: ${JSON.stringify(input.interests)}
+- Current Skills: "${input.currentSkills}"
+- Learning Style: "${input.learningStyle}"
+
+Here are the available career paths and their required skills:
+${careerPaths.map(path => `- Path: ${path.name} (slug: ${path.slug})
+  - Required Skills: ${JSON.stringify(path.skills)}`).join('\n')}
+
+Based on all the information, perform the following tasks:
+
+1. **Recommend a Career Path**: Choose the single best career path slug from the available list that aligns with the user's interests.
+
+2. **Justify Your Recommendation**: Write a short, encouraging, one-sentence explanation for your choice. For example, "Because you enjoy building interfaces and have some design skills, Frontend Development is a great fit!"
+
+3. **Analyze Skills**:
+   - Compare the user's "Current Skills" with the "Required Skills" for your recommended path.
+   - Identify which skills the user seems to have (possessed).
+   - Identify which skills the user seems to be missing.
+   - The available skills to choose from are: ${JSON.stringify(allPathSkills)}
+   - Be realistic. If the user only mentions "Python", don't assume they also know "Pandas" and "NumPy" unless they state it.
+
+Return the final output in the required JSON format.`;
+
+    const { output } = await ai.generate({
+      model: 'googleai/gemini-2.5-flash',
+      prompt: customPrompt,
+      output: { schema: CareerAdvisorOutputSchema }
     });
+    
     return output!;
   }
 );
