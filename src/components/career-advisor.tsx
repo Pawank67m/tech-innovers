@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -93,59 +92,43 @@ export function CareerAdvisor() {
     <FormProvider {...methods}>
       <Card>
         <CardContent className="p-4 sm:p-6 min-h-[450px]">
-          <AnimatePresence mode="wait">
-            {isLoading ? (
-              <motion.div
-                key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-col items-center justify-center h-full"
-              >
-                <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-                <h3 className="text-xl font-semibold">Analyzing your profile...</h3>
-                <p className="text-muted-foreground">Our AI is crafting your personalized career advice.</p>
-              </motion.div>
-            ) : results ? (
-              <motion.div key="results">
-                 <ResultsDisplay results={results} restart={restart} />
-              </motion.div>
-            ) : (
-              <motion.form
-                key={currentStep}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.3 }}
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col h-full"
-              >
-                <div className="flex-grow">
-                  <CurrentStepComponent />
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+              <h3 className="text-xl font-semibold">Analyzing your profile...</h3>
+              <p className="text-muted-foreground">Our AI is crafting your personalized career advice.</p>
+            </div>
+          ) : results ? (
+            <div>
+               <ResultsDisplay results={results} restart={restart} />
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full">
+              <div className="flex-grow">
+                <CurrentStepComponent />
+              </div>
+              
+              <div className="mt-8 pt-4 border-t flex justify-between items-center">
+                <div>
+                  <span className="text-sm text-muted-foreground">
+                    Step {currentStep + 1} of {steps.length}
+                  </span>
                 </div>
-                
-                <div className="mt-8 pt-4 border-t flex justify-between items-center">
-                  <div>
-                    <span className="text-sm text-muted-foreground">
-                      Step {currentStep + 1} of {steps.length}
-                    </span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button type="button" variant="outline" onClick={handlePrev} disabled={currentStep === 0}>
-                      Back
+                <div className="flex gap-2">
+                  <Button type="button" variant="outline" onClick={handlePrev} disabled={currentStep === 0}>
+                    Back
+                  </Button>
+                  {currentStep < steps.length - 1 ? (
+                    <Button type="button" onClick={handleNext}>
+                      Next
                     </Button>
-                    {currentStep < steps.length - 1 ? (
-                      <Button type="button" onClick={handleNext}>
-                        Next
-                      </Button>
-                    ) : (
-                      <Button type="submit">Get My Recommendation</Button>
-                    )}
-                  </div>
+                  ) : (
+                    <Button type="submit">Get My Recommendation</Button>
+                  )}
                 </div>
-              </motion.form>
-            )}
-          </AnimatePresence>
+              </div>
+            </form>
+          )}
         </CardContent>
       </Card>
     </FormProvider>
