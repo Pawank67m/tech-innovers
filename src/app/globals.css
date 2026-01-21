@@ -48,7 +48,7 @@
         --ring: 217.2 91.2% 59.8%;
     }
 
-    /* Transformers Theme */
+    /* Epic Transformers Theme */
     .transformers-theme {
         --background: 0 0% 8%;
         --foreground: 0 0% 95%;
@@ -80,27 +80,179 @@
 
     /* Transformers Theme Components */
     .transformers-card {
-        @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-2 border-cyan-500/30;
-        box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer components {
+
+    /* Epic Transformers Card Styles */
+    .transformers-card {
+        @apply relative overflow-hidden;
+        background: linear-gradient(135deg,
+                rgba(15, 23, 42, 0.95) 0%,
+                rgba(30, 41, 59, 0.9) 25%,
+                rgba(51, 65, 85, 0.85) 50%,
+                rgba(71, 85, 105, 0.9) 75%,
+                rgba(15, 23, 42, 0.95) 100%);
+        border: 2px solid transparent;
+        border-image: linear-gradient(45deg, #00ffff, #ffd700, #ff0000, #00ffff) 1;
+        box-shadow:
+            0 0 20px rgba(0, 255, 255, 0.3),
+            0 0 40px rgba(255, 215, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
+    .transformers-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+        transition: left 0.5s;
+    }
+
+    .transformers-card:hover::before {
+        left: 100%;
+    }
+
+    /* Epic Transformers Buttons */
     .transformers-button {
-        @apply bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold;
-        @apply border border-cyan-500/50 shadow-lg;
+        @apply relative overflow-hidden font-bold text-white;
+        background: linear-gradient(45deg, #1e40af, #0ea5e9, #06b6d4);
+        border: 1px solid #00ffff;
+        box-shadow:
+            0 0 10px rgba(0, 255, 255, 0.5),
+            0 4px 15px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         transition: all 0.3s ease;
     }
 
     .transformers-button:hover {
-        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        background: linear-gradient(45deg, #2563eb, #0284c7, #0891b2);
+        box-shadow:
+            0 0 20px rgba(0, 255, 255, 0.8),
+            0 0 40px rgba(0, 255, 255, 0.4),
+            0 6px 20px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
     }
 
+    .transformers-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.5s;
+    }
+
+    .transformers-button:hover::before {
+        left: 100%;
+    }
+
+    /* Autobot Button (Blue/Red like Optimus Prime) */
+    .autobot-button {
+        background: linear-gradient(45deg, #1e40af, #dc2626, #1e40af);
+        border: 1px solid #3b82f6;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+    }
+
+    .autobot-button:hover {
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(220, 38, 38, 0.4);
+    }
+
+    /* Decepticon Button (Purple/Silver) */
+    .decepticon-button {
+        background: linear-gradient(45deg, #7c3aed, #6b7280, #7c3aed);
+        border: 1px solid #8b5cf6;
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+    }
+
+    .decepticon-button:hover {
+        box-shadow: 0 0 25px rgba(139, 92, 246, 0.8), 0 0 50px rgba(107, 114, 128, 0.4);
+    }
+
+    /* Matrix Text Effects */
     .matrix-text {
-        @apply text-yellow-400 font-mono;
-        text-shadow: 0 0 10px #FFD700;
+        @apply font-mono font-bold;
+        color: #ffd700;
+        text-shadow:
+            0 0 5px #ffd700,
+            0 0 10px #ffd700,
+            0 0 15px #ffd700,
+            0 0 20px #ffd700;
+        animation: matrix-glow 2s ease-in-out infinite alternate;
     }
 
+    .energon-text {
+        color: #00ffff;
+        text-shadow:
+            0 0 5px #00ffff,
+            0 0 10px #00ffff,
+            0 0 15px #00ffff;
+        animation: energon-pulse 1.5s ease-in-out infinite;
+    }
+
+    /* Energon Glow Effects */
     .energon-glow {
-        @apply border-cyan-500;
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        border: 2px solid #00ffff;
+        box-shadow:
+            0 0 10px rgba(0, 255, 255, 0.5),
+            0 0 20px rgba(0, 255, 255, 0.3),
+            0 0 30px rgba(0, 255, 255, 0.1),
+            inset 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    /* Transformers Input Styles */
+    .transformers-input {
+        @apply bg-slate-800 border-2 border-cyan-500/30 text-cyan-100;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8));
+        box-shadow:
+            inset 0 2px 4px rgba(0, 0, 0, 0.3),
+            0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    .transformers-input:focus {
+        border-color: #00ffff;
+        box-shadow:
+            inset 0 2px 4px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(0, 255, 255, 0.4),
+            0 0 0 3px rgba(0, 255, 255, 0.1);
+    }
+
+    .transformers-input::placeholder {
+        color: rgba(0, 255, 255, 0.6);
+    }
+}
+
+/* Epic Transformers Animations */
+@keyframes matrix-glow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 15px #ffd700;
+    }
+
+    50% {
+        text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700;
+    }
+}
+
+@keyframes energon-pulse {
+
+    0%,
+    100% {
+        text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+        color: #00ffff;
+    }
+
+    50% {
+        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        color: #66ffff;
     }
 }

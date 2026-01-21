@@ -56,16 +56,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Transformers Theme Colors
+        // Transformers Theme Colors (Based on the epic images)
         transformers: {
-          'autobot-blue': '#0066CC',
-          'autobot-red': '#FF0000',
-          'decepticon-purple': '#6B46C1',
-          'energon-cyan': '#00FFFF',
-          'matrix-gold': '#FFD700',
-          'spark-orange': '#FF6600',
-          'steel-gray': '#708090',
-          'plasma-pink': '#FF1493',
+          'optimus-blue': '#1e40af',
+          'optimus-red': '#dc2626',
+          'bumblebee-yellow': '#fbbf24',
+          'energon-cyan': '#00ffff',
+          'matrix-gold': '#ffd700',
+          'decepticon-purple': '#7c3aed',
+          'steel-gray': '#6b7280',
+          'battle-orange': '#ea580c',
+          'spark-white': '#f8fafc',
+          'shadow-black': '#0f172a',
         },
       },
       borderRadius: {

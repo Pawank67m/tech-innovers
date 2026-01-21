@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Zap, Palette } from 'lucide-react';
+import { Zap, Palette, Shield, Cpu } from 'lucide-react';
 
 export function ThemeToggle() {
   const [isTransformersTheme, setIsTransformersTheme] = useState(false);
@@ -33,18 +33,25 @@ export function ThemeToggle() {
       variant="outline"
       size="sm"
       onClick={toggleTheme}
-      className={isTransformersTheme ? 'transformers-button' : ''}
+      className={`relative overflow-hidden transition-all duration-300 ${
+        isTransformersTheme 
+          ? 'transformers-button border-cyan-500 text-white' 
+          : 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50'
+      }`}
     >
       {isTransformersTheme ? (
         <>
-          <Zap className="h-4 w-4 mr-2" />
-          Transformers
+          <Shield className="h-4 w-4 mr-2 text-cyan-400" />
+          <span className="matrix-text text-xs">AUTOBOTS</span>
         </>
       ) : (
         <>
           <Palette className="h-4 w-4 mr-2" />
-          Default
+          <span>Default</span>
         </>
+      )}
+      {isTransformersTheme && (
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent animate-pulse" />
       )}
     </Button>
   );
