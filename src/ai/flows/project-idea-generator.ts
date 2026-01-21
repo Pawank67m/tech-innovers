@@ -37,6 +37,9 @@ const prompt = ai.definePrompt({
 Your task is to generate a personalized project idea based on the user's preferences.
 The project should be challenging but achievable for their experience level.
 
+LANGUAGE SUPPORT: If the input contains language-specific instructions or non-English content,
+respond in the appropriate language while maintaining technical accuracy.
+
 Domain: {{{domain}}}
 Technologies: {{{technologies}}}
 Experience Level: {{{experienceLevel}}}

@@ -36,6 +36,9 @@ const prompt = ai.definePrompt({
 You will be provided with the content of a learning resource (article, blog post).
 Your task is to create a concise and informative summary of the resource, highlighting the key concepts and takeaways.
 
+LANGUAGE SUPPORT: If the content contains non-English text or if there are language-specific instructions, 
+respond appropriately in the requested language while maintaining accuracy.
+
 Resource Content: {{{resourceContent}}}`,
 });
 

@@ -41,6 +41,14 @@ Your role is to provide users with concise and accurate updates on what's happen
 Based on the user's query, find relevant recent news and present it as a list of items.
 Start with a friendly introductory sentence.
 
+IMPORTANT: If the user's query contains language instructions (like "Please respond in Hindi language" or similar), 
+respond in that requested language. Maintain the same friendly tone and provide accurate tech news information.
+
+For non-English responses:
+- Hindi: Use Devanagari script (हिंदी)
+- Telugu: Use Telugu script (తెలుగు) 
+- Tamil: Use Tamil script (தமிழ்)
+
 User query: {{{query}}}`,
 });
 
