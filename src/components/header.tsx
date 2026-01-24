@@ -4,9 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { CodeXml, Route, Sparkles, Book, Languages, Database, Wrench, Menu } from 'lucide-react';
+import { CodeXml, Route, Sparkles, Book, Languages, Database, Wrench, Menu, User, LogOut, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { useAuth } from '@/contexts/auth-context';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const navLinks = [
   { href: '/career-paths', label: 'Career Paths', icon: Route },
@@ -19,6 +22,15 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const { user, signOut, loading } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50 shadow-sm">
@@ -59,12 +71,106 @@ export function Header() {
           <Button asChild variant="ghost" className="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
             <Link href="/tools">Tools Explorer</Link>
           </Button>
-          <ThemeToggle />
+          
+          {/* Authentication Section */}
+          <div className="flex items-center gap-2 ml-2">
+            <ThemeToggle />
+            {!loading && (
+              <>
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                          <AvatarFallback>
+                            {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56" align="end" forceMount>
+                      <div className="flex items-center justify-start gap-2 p-2">
+                        <div className="flex flex-col space-y-1 leading-none">
+                          {user.displayName && (
+                            <p className="font-medium">{user.displayName}</p>
+                          )}
+                          {user.email && (
+                            <p className="w-[200px] truncate text-sm text-muted-foreground">
+                              {user.email}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleSignOut}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Log out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button asChild variant="outline" size="sm" className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50">
+                    <Link href="/login" className="flex items-center gap-2">
+                      <LogIn className="h-4 w-4" />
+                      Sign In
+                    </Link>
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </nav>
         
         {/* Mobile Navigation */}
         <div className="md:hidden flex items-center gap-2">
           <ThemeToggle />
+          
+          {/* Mobile Auth */}
+          {!loading && (
+            <>
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                        <AvatarFallback>
+                          {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <div className="flex items-center justify-start gap-2 p-2">
+                      <div className="flex flex-col space-y-1 leading-none">
+                        {user.displayName && (
+                          <p className="font-medium">{user.displayName}</p>
+                        )}
+                        {user.email && (
+                          <p className="w-[200px] truncate text-sm text-muted-foreground">
+                            {user.email}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/login">
+                    <LogIn className="h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
+            </>
+          )}
+          
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border-blue-200 hover:border-purple-300 transition-all duration-300">
@@ -92,6 +198,42 @@ export function Header() {
                       </Link>
                   </SheetClose>
                 ))}
+                
+                {/* Mobile Auth in Sheet */}
+                {user && (
+                  <>
+                    <div className="border-t pt-4 mt-4">
+                      <div className="flex items-center gap-3 p-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                          <AvatarFallback>
+                            {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          {user.displayName && (
+                            <p className="font-medium text-sm">{user.displayName}</p>
+                          )}
+                          {user.email && (
+                            <p className="text-xs text-muted-foreground truncate">
+                              {user.email}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <SheetClose asChild>
+                        <Button
+                          variant="ghost"
+                          onClick={handleSignOut}
+                          className="w-full justify-start gap-3 p-3 text-lg font-medium text-muted-foreground hover:text-primary hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50"
+                        >
+                          <LogOut className="h-5 w-5" />
+                          Sign Out
+                        </Button>
+                      </SheetClose>
+                    </div>
+                  </>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

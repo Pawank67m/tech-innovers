@@ -2,15 +2,69 @@
 
 import { domains, type Domain } from '@/lib/domains';
 import { DomainCard } from '@/components/domain-card';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/auth-context';
+import { Loader2 } from 'lucide-react';
+import { PrismFluxLoader } from '@/components/ui/prism-loader';
 
 export default function HomePage() {
   const [search, setSearch] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isTransformersTheme, setIsTransformersTheme] = useState(false);
+  const { user, loading } = useAuth();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const hasTransformersTheme = document.documentElement.classList.contains('transformers-theme');
+      setIsTransformersTheme(hasTransformersTheme);
+    };
+    
+    checkTheme();
+    
+    // Listen for theme changes
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      console.log('User not authenticated, redirecting to login');
+      router.push('/login');
+    } else if (user) {
+      console.log('User authenticated:', user.email);
+    }
+  }, [user, loading, router]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${isTransformersTheme ? 'transformers-bg-home' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'}`}>
+        <div className="text-center">
+          <PrismFluxLoader size={60} className="mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading while redirecting to login
+  if (!user) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${isTransformersTheme ? 'transformers-bg-home' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'}`}>
+        <div className="text-center">
+          <PrismFluxLoader size={60} className="mx-auto mb-4" />
+          <p className="text-muted-foreground">Redirecting to login...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Helper to check if a domain or any of its topics match the search
   const filterDomains = (domain: Domain) => {
@@ -45,17 +99,19 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className={`min-h-screen ${isTransformersTheme ? 'transformers-bg-home' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'}`}>
       {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-3xl animate-float-delayed"></div>
-        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-gradient-to-r from-green-400/20 to-cyan-400/20 rounded-full blur-3xl animate-float"></div>
-      </div>
+      {!isTransformersTheme && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-3xl animate-float-delayed"></div>
+          <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-gradient-to-r from-green-400/20 to-cyan-400/20 rounded-full blur-3xl animate-float"></div>
+        </div>
+      )}
       
       <div className="container mx-auto px-4 py-8 md:py-16 relative z-10">
         <header className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold font-headline bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-fade-in-up">
+          <h1 className={`text-4xl md:text-6xl font-bold font-headline ${isTransformersTheme ? 'matrix-text' : 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'} animate-fade-in-up`}>
             Explore Tech Domains
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
@@ -73,7 +129,11 @@ export default function HomePage() {
               onFocus={handleFocus}
               onBlur={handleBlur}
               placeholder="Search domains or topics..."
-              className="w-full px-4 py-3 border border-input rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:shadow-xl bg-white/80 backdrop-blur-sm"
+              className={`w-full px-4 py-3 border rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 hover:shadow-xl ${
+                isTransformersTheme 
+                  ? 'transformers-input' 
+                  : 'border-input focus:ring-primary bg-white/80 backdrop-blur-sm'
+              }`}
               autoComplete="off"
             />
             {dropdownOpen && (
